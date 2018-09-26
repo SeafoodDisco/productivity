@@ -34,13 +34,13 @@
                 alert("Please finish adding your current task");
             }
             else {
-                document.getElementById("todoList").innerHTML += '<div class="task" id="newTask">\n' +
+                document.getElementById("todoList").innerHTML += '<div class="task" id="newTask" onclick="catChange(event)">\n' +
                     '                <div><input class="completeCheck" type="checkbox" onchange="sortTasks()"><b>Complete</b><br></div>\n' +
                     '                <div class="taskDescription"><b>Description</b><br/><input class="description" type="text"/></div>\n' +
                     '                <div class="dueDate"><b>Due</b><br/><input type="datetime-local" class="due"></div>\n' +
                     '                <div>\n' +
                     '                    <b>Category</b><br/>\n' +
-                    '                    <select class="Category" onchange="catChange(event)">\n' +
+                    '                    <select class="Category">\n' +
                     '                        <option>School</option>\n' +
                     '                        <option>Work</option>\n' +
                     '                        <option>Chore</option>\n' +
@@ -143,17 +143,18 @@
 
         function catChange(e){
             var target = e.target;
-            if(e.value == "Chore"){
-                e.style.backgroundColor = "#7fff81";
+
+            if(target.getElementsByClassName("Category")[0].value == "Chore"){
+                target.style.backgroundColor = "#7fff81";
             }
-            if(e.value == "Leisure"){
-                e.style.backgroundColor = "#87e3ff";
+            if(target.getElementsByClassName("Category")[0].value == "Leisure"){
+                target.style.backgroundColor = "#87e3ff";
             }
-            if(e.value == "School"){
-                e.style.backgroundColor = "#ec87ff";
+            if(target.getElementsByClassName("Category")[0].value == "School"){
+                target.style.backgroundColor = "#ec87ff";
             }
-            if(e.value == "Work"){
-                e.style.backgroundColor = "#ffa672";
+            if(target.getElementsByClassName("Category")[0].value == "Work"){
+                target.style.backgroundColor = "#ffa672";
             }
         }
     </script>
