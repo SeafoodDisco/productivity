@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href="Style.css" type="text/css"/>
+</head>
+<body onkeydown="keyPress(event)">
+    <div class="header">
+        <div onclick="location.href='todo.html'" style="cursor: pointer;"><h1>To Do List</h1></div>
+        <div onclick="location.href='gallery.html'" style="cursor: pointer;"><h1>Photo Gallery</h1></div>
+        <div onclick="location.href='about.html'" style="cursor: pointer;"><h1>About Me</h1></div>
+    </div>
+    <div class="gallery">
+        <img id="1" src="abrams.jpg" class="photo" onclick="lightbox(1)"/>
+        <img id="2" src="wood.jpg" class="photo" onclick="lightbox(2)"/>
+        <img id="3" src="swing.jpg" class="photo" onclick="lightbox(3)"/>
+        <img id="4" src="rocks.jpg" class="photo" onclick="lightbox(4)"/>
+        <img id="5" src="road.jpg" class="photo" onclick="lightbox(5)"/>
+        <img id="6" src="pinecones.jpg" class="photo" onclick="lightbox(6)"/>
+        <img id="7" src="pier.jpg" class="photo" onclick="lightbox(7)"/>
+        <img id="8" src="Moss.jpg" class="photo" onclick="lightbox(8)"/>
+        <img id="9" src="lake.jpg" class="photo" onclick="lightbox(9)"/>
+        <img id="10" src="hipster.jpg" class="photo" onclick="lightbox(10)"/>
+        <img id="11" src="himalayas.jpg" class="photo" onclick="lightbox(11)"/>
+        <img id="12" src="hills.jpg" class="photo" onclick="lightbox(12)"/>
+        <img id="13" src="Grass.jpg" class="photo" onclick="lightbox(13)"/>
+        <img id="14" src="fisherman.jpg" class="photo" onclick="lightbox(14)"/>
+        <img id="15" src="city.jpg" class="photo" onclick="lightbox(15)"/>
+        <img id="16" src="cat.jpg" class="photo" onclick="lightbox(16)"/>
+        <img id="17" src="building.jpg" class="photo" onclick="lightbox(17)"/>
+        <img id="18" src="bridge.jpg" class="photo" onclick="lightbox(18)"/>
+        <img id="19" src="bench.jpg" class="photo" onclick="lightbox(19)"/>
+        <img id="20" src="barbs.jpg" class="photo" onclick="lightbox(20)"/>
+    </div>
+
+    <div id="lightbox">
+        <div id="closeButton">
+            <div id="close" onclick="closeBox()">╳</div>
+        </div>
+        <div class="picDisplay">
+            <div class="photoNav" onclick="navTo(-1)"><</div>
+            <img src="abrams.jpg" id="bigPhoto">\
+            <div class="photoNav" onclick="navTo(1)">></div>
+        </div>
+        <div class="preview">
+            <img src="abrams.jpg" class="thumb" onclick="navTo(-4)"/>
+            <img src="wood.jpg" class="thumb" onclick="navTo(-3)"/>
+            <img src="swing.jpg" class="thumb" onclick="navTo(-2)"/>
+            <img src="rocks.jpg" class="thumb" onclick="navTo(-1)"/>
+            <img src="road.jpg" class="thumb" onclick="navTo(0)"/>
+            <img src="pinecones.jpg" class="thumb" onclick="navTo(1)"/>
+            <img src="pier.jpg" class="thumb" onclick="navTo(2)"/>
+            <img src="Moss.jpg" class="thumb" onclick="navTo(3)"/>
+            <img src="lake.jpg" class="thumb" onclick="navTo(4)"/>
+        </div>
+    </div>
+
+    <script>
+        var globalPhoto = 1;
+
+        function lightbox(photo){
+            var thumbs = document.getElementsByClassName("thumb");
+            document.getElementById("lightbox").style.visibility = "visible";
+            document.getElementById("lightbox").style.pointerEvents = "all";
+            document.getElementById("close").style.visibility = "visible";
+            document.getElementById("close").style.pointerEvents = "all";
+            document.getElementById("bigPhoto").src = document.getElementById(photo).src;
+            globalPhoto = photo;
+            for(var i=-4; i<5; i++){
+                thumbs[i+4].src = document.getElementById(((globalPhoto + i + 20 - 1)%20) +1).src;
+            }
+        }
+        function navTo(photo){
+            lightbox(((globalPhoto + photo -1 + 20) % 20)+1);
+        }
+        function closeBox(){
+            document.getElementById("lightbox").style.visibility = "hidden";
+            document.getElementById("lightbox").style.pointerEvents = "none";
+            document.getElementById("close").style.visibility = "hidden";
+            document.getElementById("close").style.pointerEvents = "none";
+        }
+        function keyPress(event){
+            if(event.key == 'Escape'){
+                closeBox();
+            }
+            if(event.key == 'ArrowRight'){
+                if(document.getElementById("lightbox").style.visibility == "visible"){
+                    navTo(1);
+                }
+            }
+            if(event.key == 'ArrowLeft'){
+                if(document.getElementById("lightbox").style.visibility == "visible"){
+                    navTo(-1);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

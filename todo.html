@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To Do List</title>
+    <link rel="stylesheet" href="Style.css" type="text/css"/>
+</head>
+<body onload="createTask()">
+    <div id="todoGrid">
+        <div class="header">
+            <div onclick="location.href='todo.html'" style="cursor: pointer;"><h1>To Do List</h1></div>
+            <div onclick="location.href='gallery.html'" style="cursor: pointer;"><h1>Photo Gallery</h1></div>
+            <div onclick="location.href='about.html'" style="cursor: pointer;"><h1>About Me</h1></div>
+        </div>
+        <div class="buttons">
+            <button id="createButton" onclick="createTask()"><b style="font-size: 1.2em">New Task</b></button>
+            <div id="sortBy">
+                <b style="font-size: 1.2em">Sort By: </b>
+                <select id="sortCriteria" onchange="sortTasks()">
+                    <option>Due Date</option>
+                    <option>Submission Date</option>
+                    <option>Category</option>
+                    <option>Complete</option>
+                    <option>Incomplete</option>
+                    <option selected disabled hidden>Submission Date</option>
+                </select>
+            </div>
+        </div>
+        <div id="todoList"></div>
+    </div>
+    <script>
+        function createTask(){
+            if(document.getElementById("newTask")){
+                alert("Please finish adding your current task");
+            }
+            else {
+                document.getElementById("todoList").innerHTML += '<div class="task" id="newTask">\n' +
+                    '                <div><input class="completeCheck" type="checkbox" onchange="sortTasks()"><b>Complete</b><br></div>\n' +
+                    '                <div class="taskDescription"><b>Description</b><br/><input class="description" type="text"/></div>\n' +
+                    '                <div class="dueDate"><b>Due</b><br/><input type="datetime-local" class="due"></div>\n' +
+                    '                <div>\n' +
+                    '                    <b>Category</b><br/>\n' +
+                    '                    <select class="Category" onchange="catChange(event)">\n' +
+                    '                        <option>School</option>\n' +
+                    '                        <option>Work</option>\n' +
+                    '                        <option>Chore</option>\n' +
+                    '                        <option>Leisure</option>\n' +
+                    '                    </select>\n' +
+                    '                </div>' +
+                    '               <button onclick="submitTask()">Done</button>' +
+                    '               <div onclick="removeElement(event)">❌</div>';
+            }
+        }
+
+        function submitTask(){
+            var task = document.getElementById("newTask");
+            var time = new Date();
+
+            if(task.getElementsByClassName("description")[0].value == "" || task.getElementsByClassName("due")[0].value == ""){
+                alert("Please enter a valid description and due date");
+            }
+
+            else {
+                task.getElementsByClassName("taskDescription")[0].innerHTML = '<b>Description</b></br>' + task.getElementsByClassName("description")[0].value;
+                task.getElementsByClassName("dueDate")[0].innerHTML = '<b>Due Date</b></br>' + task.getElementsByClassName("due")[0].value;
+                task.id = time.getTime();
+            }
+        }
+
+        function sortTasks(){
+            var tasks = document.getElementsByClassName("task");
+            var newTasks = [];
+            var criteria = document.getElementById("sortCriteria").value;
+
+            for(var i=0; i<tasks.length; i++) {
+                tasks[i].style.visibility = "visible";
+            }
+
+            if(criteria == "Submission Date"){
+                for(var i=0; i<tasks.length; i++){
+                    newTasks.push(tasks[i].id);
+                }
+                newTasks.sort();
+                for(var i=0; i<tasks.length; i++){
+                    document.getElementById(newTasks[i]).style.order = tasks.length-i-1;
+                }
+            }
+
+            if(criteria == "Due Date"){
+                for(var i=0; i<tasks.length; i++){
+                    newTasks.push(tasks[i].getElementsByClassName("dueDate")[0].innerHTML);
+                }
+                newTasks.sort();
+                for(var i=0; i<tasks.length; i++){
+                    for(var j=0; j<tasks.length; j++) {
+                        if (newTasks[i] == tasks[j].getElementsByClassName("dueDate")[0].innerHTML) {
+                            tasks[j].style.order = i;
+                        }
+                    }
+                }
+            }
+
+            if(criteria == "Category"){
+                for(var i=0; i<tasks.length; i++){
+                    newTasks.push(tasks[i].getElementsByClassName("Category")[0].value);
+                }
+                newTasks.sort();
+                for(var i=0; i<tasks.length; i++){
+                    for(var j=0; j<tasks.length; j++) {
+                        if (newTasks[i] == tasks[j].getElementsByClassName("Category")[0].value) {
+                            tasks[j].style.order = i;
+                        }
+                    }
+                }
+            }
+
+            if(criteria == "Complete"){
+                for(var i=0; i<tasks.length; i++) {
+                    if (!(tasks[i].getElementsByClassName("completeCheck")[0].checked)) {
+                        tasks[i].style.visibility = "hidden";
+                    }
+                }
+            }
+
+            if(criteria == "Incomplete"){
+                for(var i=0; i<tasks.length; i++) {
+                    if ((tasks[i].getElementsByClassName("completeCheck")[0].checked)) {
+                        tasks[i].style.visibility = "hidden";
+                    }
+                }
+            }
+
+            if(document.getElementById("newTask")){
+                document.getElementById("newTask").style.visibility = "visible";
+                document.getElementById("newTask").style.order = "-5";
+            }
+        }
+
+        function removeElement(e){
+            var target = e.target;
+            target.parentElement.parentElement.removeChild(target.parentElement.parentElement.getElementsByClassName("task")[0]);
+        }
+
+        function catChange(e){
+            var target = e.target;
+            if(e.value == "Chore"){
+                e.style.backgroundColor = "#7fff81";
+            }
+            if(e.value == "Leisure"){
+                e.style.backgroundColor = "#87e3ff";
+            }
+            if(e.value == "School"){
+                e.style.backgroundColor = "#ec87ff";
+            }
+            if(e.value == "Work"){
+                e.style.backgroundColor = "#ffa672";
+            }
+        }
+    </script>
+</body>
+</html>
